@@ -1,5 +1,5 @@
-import { buildPython } from './python-generator.js?v=20261012-superagent3';
-import { buildJava } from './java-generator.js?v=20261012-superagent5';
+import { buildPython } from './python-generator.js';
+import { buildJava } from './java-generator.js';
 
 const MAX_REQ_CHARS = 20000;
 const input = document.querySelector('#requirement');
