@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f5f2">
+  <title>FlowBDD — Agente inteligente de QA</title>
+  <link rel="stylesheet" href="/styles.css?v=20261012-superagent4">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/"><span class="brand-mark">F</span><span>flow<span class="brand-accent">bdd</span></span></a>
+    <span class="top-note"><i></i> AGENTE LOCAL · EJECUCIÓN VISIBLE</span>
+    <div class="header-actions"><button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false">☾ Tema oscuro</button><a class="github" href="#como-funciona">Cómo funciona <span>↗</span></a></div>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="eyebrow"><span>QA, DEL REQUISITO AL ASSERT</span><span class="eyebrow-line"></span></div>
+      <h1>Tu flujo.<br><span class="serif">Una prueba trazable.</span></h1>
+      <p>Convertí historias y requerimientos en escenarios BDD, JSON QA Studio y código de automatización para Web, Escritorio o Móvil.</p>
+    </section>
+
+    <section class="workspace" aria-label="Agente FlowBDD">
+      <div class="input-panel">
+        <div class="panel-heading"><span class="step">01</span><div><h2>Describí qué probar</h2><p>Elegí un modo y pegá la historia o el requerimiento.</p></div></div>
+        <label class="field-label" for="input-mode">MODO DE ENTRADA</label>
+        <select id="input-mode" class="wide-select">
+          <option value="requirement">Solo requerimiento</option>
+          <option value="url">URL + descripción</option>
+          <option value="mixed">Mixto: requerimiento + URL</option>
+        </select>
+        <label class="field-label" for="target-platform">PLATAFORMA A PROBAR</label>
+        <select id="target-platform" class="wide-select">
+          <option value="web">Web · navegador</option>
+          <option value="desktop">Escritorio · Windows nativo</option>
+          <option value="mobile">Móvil · Android / iOS nativo</option>
+        </select>
+        <div id="native-platform-config" class="url-wrap" hidden>
+          <p class="hint">Las aplicaciones nativas se automatizan con Appium. Configurá la aplicación/dispositivo; el script indicará qué datos falten.</p>
+          <label class="field-label" for="appium-server-url">SERVIDOR APPIUM</label>
+          <input id="appium-server-url" type="url" value="http://127.0.0.1:4723" autocomplete="url">
+          <div id="desktop-config" hidden>
+            <label class="field-label" for="desktop-app-path">RUTA O ID DE LA APLICACIÓN WINDOWS</label>
+            <input id="desktop-app-path" type="text" placeholder="C:\\Aplicaciones\\MiApp.exe o ID de aplicación UWP">
+          </div>
+          <div id="mobile-config" hidden>
+            <label class="field-label" for="mobile-os">SISTEMA MÓVIL</label>
+            <select id="mobile-os" class="wide-select"><option value="Android">Android</option><option value="iOS">iOS</option></select>
+            <label class="field-label" for="mobile-device">DISPOSITIVO / SIMULADOR</label>
+            <input id="mobile-device" type="text" value="Android Emulator" placeholder="Nombre o UDID">
+            <label class="field-label" for="mobile-app-id">PACKAGE / BUNDLE ID</label>
+            <input id="mobile-app-id" type="text" placeholder="com.ejemplo.app (opcional si cargás un archivo de app)">
+            <label class="field-label" for="mobile-app-path">ARCHIVO DE APP (OPCIONAL)</label>
+            <input id="mobile-app-path" type="text" placeholder="C:\\apps\\app.apk o ruta de .app/.ipa en Mac">
+          </div>
+        </div>
+        <div id="url-wrap" class="url-wrap" hidden>
+          <label class="field-label" for="target-url">URL A ANALIZAR</label>
+          <input id="target-url" type="url" placeholder="https://ejemplo.com/login" autocomplete="url">
+          <button id="analyze-url" class="secondary-button" type="button">Analizar página con Playwright</button>
+          <p class="hint">El navegador analiza controles visibles. Si hay autenticación, podrás ingresar credenciales en una ventana temporal; no se guardan.</p>
+        </div>
+        <label class="field-label" for="requirement">REQUERIMIENTO FUNCIONAL</label>
+        <textarea id="requirement" maxlength="20000" placeholder="Como gerente, quiero aprobar facturas pendientes para que se paguen a tiempo. Incluí pasos, reglas y resultados esperados."></textarea>
+        <div class="input-meta"><span id="char-count">0 / 20000</span><button class="sample" id="sample" type="button">Cargar ejemplo de facturas <span>↗</span></button></div>
+
+        <fieldset class="choice-group">
+          <legend>TIPOS DE PRUEBA</legend>
+          <label><input type="checkbox" name="test-type" value="humo"> Humo</label>
+          <label><input type="checkbox" name="test-type" value="funcional" checked> Funcional</label>
+          <label><input type="checkbox" name="test-type" value="regresion"> Regresión</label>
+          <label><input type="checkbox" name="test-type" value="integracion"> Integración</label>
+          <label><input type="checkbox" name="test-type" value="carga"> Carga / estrés</label>
+        </fieldset>
+        <fieldset class="choice-group outputs-group">
+          <legend>SALIDAS A PREPARAR</legend>
+          <label><input type="checkbox" id="want-json" checked> 1 · JSON profesional para QA Studio</label>
+          <label><input type="checkbox" id="want-python" checked> 2 · Script Python + Playwright</label>
+          <label id="java-selenium-option" hidden><input type="checkbox" id="want-java-selenium"> 3 · Java + Selenium</label>
+          <label id="java-testng-option" hidden><input type="checkbox" id="want-java-testng"> 4 · Java + TestNG (suite Selenium)</label>
+        </fieldset>
+        <fieldset class="choice-group superagent-group">
+          <legend>MODO SUPERAGENTE</legend>
+          <label class="superagent-switch"><input type="checkbox" id="superagent-enabled"> 🚀 Activar SuperAgente con IA Generativa</label>
+          <div id="superagent-settings" hidden>
+            <label class="field-label" for="openai-api-key">🔑 API Key de OpenAI</label>
+            <input id="openai-api-key" type="password" autocomplete="off" spellcheck="false" placeholder="sk-…">
+            <p class="security-note">ⓘ La clave permanece en memoria durante esta sesión y FlowBDD no la guarda. Se envía a OpenAI junto con el requerimiento cuando solicitás IA.</p>
+            <label><input type="checkbox" id="voice-enabled"> 🔊 Activar notificaciones por voz (solo lectura; no usa el micrófono)</label>
+            <label class="ai-tool-toggle"><input type="checkbox" id="use-llm"> Analizar, organizar y sugerir con IA</label>
+          </div>
+        </fieldset>
+        <fieldset class="choice-group tools-group">
+          <legend>HERRAMIENTAS OPCIONALES</legend>
+          <label><input type="checkbox" id="use-ocr"> 🔍 Usar Tesseract OCR como respaldo visual</label>
+          <p id="ocr-status" class="hint">Solo se ejecuta si Tesseract está instalado; el OCR aporta texto y coordenadas para revisión manual.</p>
+        </fieldset>
+        <button class="generate" id="generate" type="button"><span>Preparar vista previa</span><span class="arrow">↗</span></button>
+        <p class="local-note"><span>✳</span> Revisa los pasos y selectores. Después puedes ejecutar la suite desde FlowBDD con Chrome visible y consultar el reporte.</p>
+      </div>
+
+      <div class="results-panel" id="results">
+        <div class="empty-state"><div class="empty-icon">↳</div><span class="empty-kicker">LA VISTA PREVIA APARECERÁ ACÁ</span><p>Revisá y editá los pasos, selectores,<br>datos y advertencias antes de confirmar.</p><div class="empty-steps"><span>HISTORIA</span><b>·</b><span>BDD</span><b>·</b><span>JSON / PYTHON</span></div></div>
+      </div>
+    </section>
+    <section class="how" id="como-funciona"><div><span class="section-label">UN FLUJO, SALIDAS QA</span><h2>Analizá.<br><span class="serif">Revisá. Generá.</span></h2></div><div class="how-items"><article><span>01</span><h3>Entrada</h3><p>Pegá una historia, un requerimiento o una URL con contexto.</p></article><article><span>02</span><h3>Vista previa</h3><p>Corregí acciones, selectores y valores. Las dudas quedan señaladas.</p></article><article><span>03</span><h3>Descargas</h3><p>Confirmá y descargá JSON, Python o Java para el flujo seleccionado.</p></article></div></section>
+    <footer><span>FLOWBDD <span class="footer-dot">·</span> AGENTE QA</span><span>Suite revisable con ejecución visible opcional.</span></footer>
+  </main>
+
+  <dialog id="auth-dialog" class="modal">
+    <form method="dialog" id="auth-form">
+      <h2>La página solicita autenticación</h2>
+      <p>Las credenciales se usarán solo durante este análisis y no se guardarán en FlowBDD.</p>
+      <label>Usuario o correo<input name="username" autocomplete="username"></label>
+      <label>Contraseña<input name="password" type="password" autocomplete="current-password"></label>
+      <div class="modal-actions"><button value="cancel" class="secondary-button">Cancelar</button><button id="auth-submit" value="continue" class="generate">Autenticar y continuar</button></div>
+    </form>
+  </dialog>
+  <dialog id="discrepancy-dialog" class="modal">
+    <form method="dialog" id="discrepancy-form">
+      <h2>Hay una diferencia con la página</h2>
+      <p id="discrepancy-copy"></p>
+      <div id="discrepancy-options"></div>
+      <label>O definilo manualmente<input id="manual-selector" placeholder="XPath, CSS, name o ID"></label>
+      <div class="modal-actions"><button value="cancel" class="secondary-button">Cancelar generación</button><button id="accept-discrepancy" value="continue" class="generate">Usar selección</button></div>
+    </form>
+  </dialog>
+  <script src="/app.js?v=20261012-superagent5" type="module"></script>
+</body>
+</html>

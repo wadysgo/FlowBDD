@@ -1,0 +1,17 @@
+node_modules/
+__pycache__/
+.pytest_cache/
+venv/
+.venv/
+.env
+.env.*
+!.env.example
+*.log
+*.pyc
+reportes/
+evidencias/capturas/
+outputs/
+work/
+evidencias/
+Thumbs.db
+Desktop.ini
