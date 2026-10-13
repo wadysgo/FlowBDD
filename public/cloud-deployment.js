@@ -5,12 +5,18 @@
   if (note) note.innerHTML = "<i></i> VERCEL · GENERACIÓN DE ARTEFACTOS";
   const analyze = document.querySelector("#analyze-url");
   if (analyze) analyze.textContent = "Analizar HTML inicial";
-  const observer = new MutationObserver(() => {
+
+  const summaryText = "En Vercel se generan y validan archivos, y se analiza el HTML inicial. Para ejecutar recorridos con Chrome visible, inicia FlowBDD en tu PC.";
+  const syncCloudMode = () => {
     const panel = document.querySelector("#visible-run-panel");
-    if (panel) panel.hidden = true;
+    if (panel && !panel.hidden) panel.hidden = true;
     const summary = document.querySelector(".preview-summary");
-    if (summary) summary.textContent = "En Vercel se generan y validan archivos, y se analiza el HTML inicial. Para ejecutar recorridos con Chrome visible, inicia FlowBDD en tu PC.";
-  });
+    if (summary && summary.textContent !== summaryText) summary.textContent = summaryText;
+  };
   const results = document.querySelector("#results");
-  if (results) observer.observe(results, { childList: true, subtree: true });
+  if (results) {
+    const observer = new MutationObserver(syncCloudMode);
+    observer.observe(results, { childList: true, subtree: true });
+    syncCloudMode();
+  }
 })();
